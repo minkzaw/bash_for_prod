@@ -12,11 +12,12 @@ if [ "${result^^}" == "Y" ] && [ ${#user_query} -gt 2 ]; then
     if [ $? == 0 ]; then
 
         provider="totp"
-        show_totp=$(echo $list_provider | grep -q $provider)
+        show_totp=$(echo $list_provider | grep -q $provider -A 2)
 
         if [ $? == 0 ]; then
             
-            echo -e "\n\n$list_provider"
+            #echo -e "\n\n$list_provider"
+            echo -e "\n\n$show_totp"
             read -n 1 -p "Would you like to reset the $provider for $user_id? (y/N) " reset
             echo ""
 

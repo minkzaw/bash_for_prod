@@ -11,13 +11,16 @@ if [ "${result^^}" == "Y" ] && [ ${#user_query} -gt 2 ]; then
     list_provider=$(sudo docker exec --user www-data --workdir /var/www/html -it $app_container_name /bin/bash -c "php occ twofactorauth:state $user_id")
     if [ $? == 0 ]; then
 
+        #provider="totp"
+        #show_totp=$(echo $list_provider | grep -q $provider)
         provider="totp"
-        show_totp=$(echo $list_provider | grep -q $provider -A 2)
+        status="Enabled"
+        filter_totp=$(echo $list_provider | grep -q $status -A 2 | grep -q $provider)
 
         if [ $? == 0 ]; then
             
-            #echo -e "\n\n$list_provider"
-            echo -e "\n\n$show_totp"
+            echo -e "\n\n$list_provider"
+            #echo -e "\n\n$show_totp"
             read -n 1 -p "Would you like to reset the $provider for $user_id? (y/N) " reset
             echo ""
 
@@ -26,10 +29,12 @@ if [ "${result^^}" == "Y" ] && [ ${#user_query} -gt 2 ]; then
                 sudo docker exec --user www-data --workdir /var/www/html -it $app_container_name /bin/bash -c "php occ twofactorauth:disable $user_id $provider"
             elif [ "${reset^^}" == "N" ]; then
                 echo "Ok. Bye!"
+
             fi
                 exit 1
 
         fi
+            echo "$provider didn't enable for $user_id"
             exit 1
         
     fi

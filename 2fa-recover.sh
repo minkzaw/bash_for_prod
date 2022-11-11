@@ -26,7 +26,7 @@ if [ "${result^^}" == "Y" ] && [ ${#user_query} -gt 2 ]; then
 
                 sudo docker exec --user www-data --workdir /var/www/html -it $app_container_name /bin/bash -c "php occ twofactorauth:disable $user_id $provider"
             elif [ "${reset^^}" == "N" ]; then
-                echo "Ok. Bye!"
+                echo "Ok. Good Bye!"
 
             fi
                 exit 1
